@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PhishGuard – Sample Phishing Analysis Report</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      background: #f7f8fa;
+      color: #1f2328;
+    }
+
+    .wrapper {
+      max-width: 760px;
+      margin: 2.5rem auto;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: #1f2328;
+      color: #ffffff;
+      padding: 2rem 2.5rem 1.5rem;
+    }
+    .header h1 { font-size: 1.6rem; letter-spacing: -.3px; }
+    .header p  { color: #9ca3af; font-size: .9rem; margin-top: .3rem; }
+
+    /* ── Body ── */
+    .body { padding: 2rem 2.5rem; }
+
+    /* ── Score row ── */
+    .score-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .card {
+      flex: 1;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 1.2rem 1.5rem;
+      text-align: center;
+    }
+    .card .label { font-size: .8rem; color: #57606a; margin-top: .3rem; }
+    .card .value { font-size: 2.2rem; font-weight: 700; }
+    .high   { color: #ef4444; }
+    .medium { color: #f59e0b; }
+    .low    { color: #22c55e; }
+    .risk-card { background: #ef4444; border-color: #ef4444; }
+    .risk-card .value, .risk-card .label { color: #fff; }
+
+    /* ── Progress bar ── */
+    .progress-wrap { margin-bottom: 2rem; }
+    .progress-label { display: flex; justify-content: space-between;
+                      font-size: .8rem; color: #57606a; margin-bottom: .4rem; }
+    .bar-bg { background: #e5e7eb; border-radius: 999px; height: 10px; overflow: hidden; }
+    .bar-fill { height: 100%; background: #ef4444; border-radius: 999px; width: 75%; }
+
+    /* ── Section titles ── */
+    h2 { font-size: 1rem; font-weight: 600; margin-bottom: 1rem;
+         padding-bottom: .4rem; border-bottom: 1px solid #e5e7eb; }
+
+    /* ── Warning table ── */
+    .category { margin-bottom: 1.5rem; }
+    .cat-title {
+      font-weight: 600;
+      font-size: .9rem;
+      margin-bottom: .5rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .badge {
+      display: inline-block;
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #fde68a;
+      border-radius: 4px;
+      font-size: .75rem;
+      padding: 1px 7px;
+    }
+    .snippet {
+      background: #fff3cd;
+      border: 1px solid #fde68a;
+      border-radius: 5px;
+      padding: .3rem .6rem;
+      font-family: monospace;
+      font-size: .82rem;
+      margin-bottom: .4rem;
+      word-break: break-all;
+    }
+    .no-hits { color: #22c55e; font-size: .88rem; }
+
+    /* ── Recommendations ── */
+    .rec-list { list-style: none; padding: 0; }
+    .rec-list li {
+      padding: .6rem .8rem .6rem 2rem;
+      position: relative;
+      border-left: 3px solid #3b82d4;
+      margin-bottom: .6rem;
+      background: #f7f8fa;
+      border-radius: 0 6px 6px 0;
+      font-size: .9rem;
+    }
+    .rec-list li::before {
+      content: "💡";
+      position: absolute;
+      left: .5rem;
+    }
+
+    /* ── Message preview ── */
+    .message-box {
+      background: #f7f8fa;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      font-size: .85rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #1f2328;
+      margin-bottom: 2rem;
+      font-family: monospace;
+    }
+
+    /* ── Disclaimer ── */
+    .disclaimer {
+      font-size: .75rem;
+      color: #57606a;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      font-size: .75rem;
+      color: #57606a;
+      padding: 1rem 2.5rem;
+      border-top: 1px solid #e5e7eb;
+      background: #f7f8fa;
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>🛡️ PhishGuard — Phishing Analysis Report</h1>
+    <p>Generated for educational / awareness purposes &nbsp;·&nbsp; Sample report</p>
+  </div>
+
+  <div class="body">
+
+    <!-- Score row -->
+    <div class="score-row">
+      <div class="card risk-card">
+        <div class="value">HIGH</div>
+        <div class="label">Risk Level</div>
+      </div>
+      <div class="card">
+        <div class="value high">75 <span style="font-size:1rem;color:#57606a;">/100</span></div>
+        <div class="label">Phishing Score</div>
+      </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Phishing Score</span>
+        <span>75 / 100</span>
+      </div>
+      <div class="bar-bg">
+        <div class="bar-fill" style="width:75%;"></div>
+      </div>
+    </div>
+
+    <!-- Analysed message -->
+    <h2>📨 Analysed Message</h2>
+    <div class="message-box">Dear Customer,
+
+We have noticed suspicious activity on your account. Your account will be suspended within 24 hours unless you verify immediately.
+
+Click here to verify: http://paypa1-secure.tk/verify
+
+Enter your OTP and password to confirm your identity.
+
+Regards,
+Support Team</div>
+
+    <!-- Warning signs -->
+    <h2>⚠️ Warning Signs Detected</h2>
+
+    <div class="category">
+      <div class="cat-title">⚡ Urgency / Pressure tactics <span class="badge">3 matches</span></div>
+      <div class="snippet">suspicious activity on your account</div>
+      <div class="snippet">suspended within 24 hours</div>
+      <div class="snippet">verify immediately</div>
+    </div>
+
+    <div class="category">
+      <div class="cat-title">🔗 Suspicious links <span class="badge">2 matches</span></div>
+      <div class="snippet">http://paypa1-secure.tk/verify</div>
+      <div class="snippet">http:// (plain HTTP — not secure)</div>
+    </div>
+
+    <div class="category">
+      <div class="cat-title">🔑 OTP / Password / Credential requests <span class="badge">2 matches</span></div>
+      <div class="snippet">Enter your OTP and password</div>
+      <div class="snippet">confirm your identity</div>
+    </div>
+
+    <div class="category">
+      <div class="cat-title">💳 Financial information requests <span class="badge">0 matches</span></div>
+      <p class="no-hits">✔ No financial information requests detected.</p>
+    </div>
+
+    <div class="category">
+      <div class="cat-title">🚩 Phishing keywords <span class="badge">2 matches</span></div>
+      <div class="snippet">dear customer</div>
+      <div class="snippet">suspicious activity</div>
+    </div>
+
+    <!-- Recommendations -->
+    <h2>💡 Safety Recommendations</h2>
+    <ul class="rec-list">
+      <li>Do <strong>not</strong> click any links in this message. Hover to preview URLs before clicking.</li>
+      <li>If you must visit a site, type the official address directly into your browser.</li>
+      <li><strong>Never share OTPs, passwords, or PINs</strong> — legitimate services will never ask for them via email or chat.</li>
+      <li>Urgency is a manipulation tactic. Pause, breathe, and verify through official channels before acting.</li>
+      <li>Look up the sender's official contact information independently and call them to verify.</li>
+      <li>Report this message to your IT/security team or forward it to your email provider's phishing report address.</li>
+      <li>If you already clicked a link or provided information, change your passwords immediately and notify your bank if needed.</li>
+    </ul>
+
+    <p class="disclaimer">
+      PhishGuard uses pattern-matching heuristics for educational awareness. It may produce false positives or miss
+      novel attacks. Always verify suspicious messages through official channels and consult your IT/security team
+      for professional guidance. No message data is transmitted — all analysis runs locally.
+    </p>
+
+  </div><!-- /body -->
+
+  <div class="footer">
+    PhishGuard &nbsp;·&nbsp; Phishing Awareness Checker &nbsp;·&nbsp; For educational use only
+  </div>
+
+</div><!-- /wrapper -->
+</body>
+</html>
